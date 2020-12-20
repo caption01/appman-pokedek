@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { debounce, map, filter } from "lodash";
+import { debounce, map, filter, xor } from "lodash";
 
 import { axois } from "./helper/axios";
 import Layout from "./components/Layout";
@@ -22,18 +22,24 @@ const COLORS = {
   Fire: "#eb4d4b",
 };
 
+const availiableCardSource = (source, current) => {
+  return xor(source, current);
+};
+
 const App = () => {
   const [deckSource, setDeckSource] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [myDeck, setMyDeck] = useState([]);
   const [query, setQuery] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const availiableCards = availiableCardSource(deckSource, myDeck);
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const onSearchChange = (value) => console.log("val", value);
-  const onSearchClick = () => console.log("search with query");
+  const onSearchChange = debounce((value) => setQuery(value), 1500);
 
   const addCardToDeck = (id) => {
     const selectedCards = filter(deckSource, (card) => card.id === id);
@@ -45,16 +51,26 @@ const App = () => {
     setMyDeck([...selectedCards]);
   };
 
-  useEffect(() => {
-    const getCard = async () => {
-      const response = await axois.get("/api/cards");
-      const cards = response.data?.cards;
-      setDeckSource(cards);
-      return;
-    };
+  const getCard = async (queryString) => {
+    setLoading(true);
+    const response = await axois.get("/api/cards", {
+      params: {
+        name: queryString,
+      },
+    });
+    const cards = response.data?.cards;
+    setDeckSource(cards);
+    setLoading(false);
+    return;
+  };
 
+  useEffect(() => {
     getCard();
   }, []);
+
+  useEffect(() => {
+    getCard(query);
+  }, [query]);
 
   const addExtra = {
     title: "add",
@@ -69,19 +85,19 @@ const App = () => {
   return (
     <div className="App">
       <Layout onClick={showModal}>
-        {map(myDeck, (card) => (
-          <Card key={card.id} width="350px" extra={deleteExtra} {...card} />
+        {map(availiableCards, (card) => (
+          <Card key={card.id} width="400px" extra={deleteExtra} {...card} />
         ))}
-        <Modal
+        {/* <Modal
+          loading={loading}
           visible={isModalVisible}
           onChange={onSearchChange}
-          onClick={onSearchClick}
           onCancel={setIsModalVisible}
         >
-          {map(deckSource, (card) => (
+          {map(availiableCards, (card) => (
             <Card key={card.id} width="100%" extra={addExtra} {...card} />
           ))}
-        </Modal>
+        </Modal> */}
       </Layout>
     </div>
   );

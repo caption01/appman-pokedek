@@ -19,10 +19,9 @@ const Title = styled.div`
 
 const Display = styled.div`
   display: flex;
-  flex-grow: 1;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  max-height: 600px;
+  justify-content: space-between;
+  height: 600px;
   overflow: scroll;
 `;
 

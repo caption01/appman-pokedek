@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal as ModalAntd, Input } from "antd";
+import { Modal as ModalAntd, Input, Spin } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
 
 const suffix = (onClick) => (
@@ -12,7 +12,7 @@ const suffix = (onClick) => (
   />
 );
 
-const Modal = ({ visible, children, onChange, onClick, onCancel }) => {
+const Modal = ({ visible, children, onChange, onClick, onCancel, loading }) => {
   const ModalHeader = () => (
     <Input
       placeholder="Basic usage"
@@ -34,7 +34,7 @@ const Modal = ({ visible, children, onChange, onClick, onCancel }) => {
         width={600}
         onCancel={() => onCancel()}
       >
-        {children}
+        {loading ? <Spin /> : <>{children}</>}
       </ModalAntd>
     </>
   );

@@ -8,7 +8,7 @@ import HappyIcon from "./HappyIcon";
 
 const WrapperCard = styled.div`
   position: relative;
-  margin: 16px;
+  margin: 8px;
 `;
 
 const StyledCard = styled(CardAntd)`
@@ -94,7 +94,7 @@ const Card = (props) => {
 
   return (
     <WrapperCard
-      onMouseEnter={() => setHover(true)}
+      onMouseMove={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       <StyledCard hoverable {...cardProps}>
