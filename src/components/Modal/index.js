@@ -12,7 +12,7 @@ const suffix = (onClick) => (
   />
 );
 
-const Modal = ({ visible, children, onChange, onClick }) => {
+const Modal = ({ visible, children, onChange, onClick, onCancel }) => {
   const ModalHeader = () => (
     <Input
       placeholder="Basic usage"
@@ -32,6 +32,7 @@ const Modal = ({ visible, children, onChange, onClick }) => {
         bodyStyle={{ maxHeight: 500, overflow: "scroll" }}
         footer={null}
         width={600}
+        onCancel={() => onCancel()}
       >
         {children}
       </ModalAntd>

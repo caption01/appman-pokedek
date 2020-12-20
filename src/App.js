@@ -9,11 +9,6 @@ import Modal from "./components/Modal";
 
 import "./App.css";
 
-const WrapperCard = styled.div`
-  position: relative;
-  margin: 16px;
-`;
-
 const COLORS = {
   Psychic: "#f8a5c2",
   Fighting: "#f0932b",
@@ -66,19 +61,16 @@ const App = () => {
     <div className="App">
       <Layout onClick={showModal}>
         {map(deckSource, (card) => (
-          <WrapperCard key={card.id}>
-            <Card width="350px" extra={addExtra} {...card} />
-          </WrapperCard>
+          <Card key={card.id} width="350px" extra={addExtra} {...card} />
         ))}
         <Modal
           visible={isModalVisible}
           onChange={onSearchChange}
           onClick={onSearchClick}
+          onCancel={setIsModalVisible}
         >
           {map(deckSource, (card) => (
-            <WrapperCard key={card.id}>
-              <Card width="100%" extra={deleteExtra} {...card} />
-            </WrapperCard>
+            <Card key={card.id} width="100%" extra={deleteExtra} {...card} />
           ))}
         </Modal>
       </Layout>

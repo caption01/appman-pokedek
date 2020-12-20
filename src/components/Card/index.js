@@ -6,6 +6,11 @@ import { reduce } from "lodash";
 import StatusBar from "./StatusBar";
 import HappyIcon from "./HappyIcon";
 
+const WrapperCard = styled.div`
+  position: relative;
+  margin: 16px;
+`;
+
 const StyledCard = styled(CardAntd)`
   width: ${(props) => props.width || "350px"};
 
@@ -82,16 +87,15 @@ const transformCardInfo = (card) => {
 const Card = (props) => {
   const { extra, ...cardProps } = props;
   const [hover, setHover] = useState(false);
+
   const cardInfo = transformCardInfo(props);
 
   return (
-    <>
-      <StyledCard
-        hoverable
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        {...cardProps}
-      >
+    <WrapperCard
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <StyledCard hoverable {...cardProps}>
         <Row gutter={[24, 0]}>
           <Col xs={10} sm={10}>
             <img src={cardInfo?.imgSrc} alt="pic" width="100%" />
@@ -110,7 +114,7 @@ const Card = (props) => {
           {extra.title}
         </StyledIcon>
       )}
-    </>
+    </WrapperCard>
   );
 };
 
