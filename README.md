@@ -1,5 +1,10 @@
 ### Nutchapon Hanouypornlert
 
+### About app
+
+- automatic search with delay 1.2s
+- if click on icon search will seach all card without query name and type
+
 #### FYI
 
 as i do assignment i found something quiet small bug
