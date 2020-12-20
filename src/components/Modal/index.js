@@ -1,12 +1,19 @@
 import React from "react";
 import { Modal as ModalAntd, Input, Spin } from "antd";
-import { AudioOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
+import styled from "styled-components";
+
+const StyledModal = styled(ModalAntd)`
+  .ant-modal-header {
+    padding: 12px;
+  }
+`;
 
 const suffix = (onClick) => (
-  <AudioOutlined
+  <SearchOutlined
     style={{
-      fontSize: 16,
-      color: "#1890ff",
+      fontSize: 22,
+      color: "#ec5656",
     }}
     onClick={() => onClick()}
   />
@@ -15,7 +22,7 @@ const suffix = (onClick) => (
 const Modal = ({ visible, children, onChange, onClick, onCancel, loading }) => {
   const ModalHeader = () => (
     <Input
-      placeholder="Basic usage"
+      placeholder="Find pokemon"
       suffix={suffix(onClick)}
       onChange={(e) => onChange(e.target.value)}
     />
@@ -23,19 +30,20 @@ const Modal = ({ visible, children, onChange, onClick, onCancel, loading }) => {
 
   return (
     <>
-      <ModalAntd
+      <StyledModal
         visible={visible}
         title={<ModalHeader />}
         closable={false}
         mask
         maskClosable
-        bodyStyle={{ maxHeight: 500, overflow: "scroll" }}
+        header
+        bodyStyle={{ maxHeight: 500, overflow: "scroll", padding: 12 }}
         footer={null}
-        width={600}
+        width={700}
         onCancel={() => onCancel()}
       >
         {loading ? <Spin /> : <>{children}</>}
-      </ModalAntd>
+      </StyledModal>
     </>
   );
 };

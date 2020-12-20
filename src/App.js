@@ -88,7 +88,7 @@ const App = () => {
         {map(availiableCards, (card) => (
           <Card key={card.id} width="400px" extra={deleteExtra} {...card} />
         ))}
-        {/* <Modal
+        <Modal
           loading={loading}
           visible={isModalVisible}
           onChange={onSearchChange}
@@ -97,7 +97,7 @@ const App = () => {
           {map(availiableCards, (card) => (
             <Card key={card.id} width="100%" extra={addExtra} {...card} />
           ))}
-        </Modal> */}
+        </Modal>
       </Layout>
     </div>
   );

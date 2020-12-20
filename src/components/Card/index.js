@@ -13,6 +13,9 @@ const WrapperCard = styled.div`
 
 const StyledCard = styled(CardAntd)`
   width: ${(props) => props.width || "350px"};
+  background-color: #f3f4f7;
+  box-shadow: ${(props) =>
+    props.hover ? `2px 2px #aeaeae` : `1px 1px #d5d6dc`};
 
   .ant-card-body {
     padding: 12px;
@@ -24,15 +27,18 @@ const StyledCol = styled(Col)`
 `;
 
 const Name = styled.div`
-  font-weight: bold;
   margin-bottom: 4px;
+  font-size: 22px;
+  font-family: "Gaegu", cursive;
 `;
 
 const StyledText = styled.span`
   position: absolute;
+  font-size: 22px;
   top: 10px;
   right: 10px;
   cursor: pointer;
+  color: #dc7777;
 `;
 
 const checkIsMax = (value, max = 100) =>
@@ -97,7 +103,7 @@ const Card = (props) => {
       onMouseMove={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <StyledCard hoverable {...cardProps}>
+      <StyledCard hoverable {...cardProps} hover={hover}>
         <Row gutter={[24, 0]}>
           <Col xs={10} sm={10}>
             <img src={cardInfo?.imgSrc} alt="pic" width="100%" />

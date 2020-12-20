@@ -12,7 +12,8 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 30px;
+  font-weight: bold;
+  font-size: 32px;
   margin: 16px;
   text-align: center;
 `;
