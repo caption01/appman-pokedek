@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { debounce, map } from "lodash";
-import styled from "styled-components";
+import { debounce, map, filter } from "lodash";
 
 import { axois } from "./helper/axios";
 import Layout from "./components/Layout";
@@ -36,6 +35,11 @@ const App = () => {
   const onSearchChange = (value) => console.log("val", value);
   const onSearchClick = () => console.log("search with query");
 
+  const addCardToDeck = (value) => {
+    const selectedCards = filter(deckSource, (card) => card.id === value);
+    setMyDeck([...myDeck, ...selectedCards]);
+  };
+
   useEffect(() => {
     const getCard = async () => {
       const response = await axois.get("/api/cards");
@@ -49,7 +53,7 @@ const App = () => {
 
   const addExtra = {
     title: "add",
-    onClick: () => console.log("add poke"),
+    onClick: (id) => addCardToDeck(id),
   };
 
   const deleteExtra = {
@@ -57,11 +61,13 @@ const App = () => {
     onClick: () => console.log("rm poke"),
   };
 
+  console.log(myDeck);
+
   return (
     <div className="App">
       <Layout onClick={showModal}>
-        {map(deckSource, (card) => (
-          <Card key={card.id} width="350px" extra={addExtra} {...card} />
+        {map(myDeck, (card) => (
+          <Card key={card.id} width="350px" extra={deleteExtra} {...card} />
         ))}
         <Modal
           visible={isModalVisible}
@@ -70,7 +76,7 @@ const App = () => {
           onCancel={setIsModalVisible}
         >
           {map(deckSource, (card) => (
-            <Card key={card.id} width="100%" extra={deleteExtra} {...card} />
+            <Card key={card.id} width="100%" extra={addExtra} {...card} />
           ))}
         </Modal>
       </Layout>

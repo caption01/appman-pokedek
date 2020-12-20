@@ -28,7 +28,7 @@ const Name = styled.div`
   margin-bottom: 4px;
 `;
 
-const StyledIcon = styled.span`
+const StyledText = styled.span`
   position: absolute;
   top: 10px;
   right: 10px;
@@ -75,6 +75,7 @@ const transformCardInfo = (card) => {
   const cardHappyNess = getHappiness(cardHp, cardDamage, cardWeak);
 
   return {
+    id: card?.id,
     name: card?.name,
     imgSrc: card?.imageUrl,
     hp: cardHp,
@@ -89,6 +90,7 @@ const Card = (props) => {
   const [hover, setHover] = useState(false);
 
   const cardInfo = transformCardInfo(props);
+  const cardId = cardInfo?.id;
 
   return (
     <WrapperCard
@@ -110,9 +112,14 @@ const Card = (props) => {
         </Row>
       </StyledCard>
       {hover && extra && (
-        <StyledIcon onClick={() => extra.onClick()} {...extra}>
-          {extra.title}
-        </StyledIcon>
+        <div
+          onClick={() => {
+            console.log("check with id", cardId);
+            extra.onClick(cardId);
+          }}
+        >
+          <StyledText {...extra}>{extra.title}</StyledText>
+        </div>
       )}
     </WrapperCard>
   );
