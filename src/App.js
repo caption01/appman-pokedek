@@ -47,6 +47,7 @@ const App = () => {
     const response = await axois.get("/api/cards", {
       params: {
         name: queryString,
+        type: queryString,
       },
     });
     const cards = response.data?.cards;
