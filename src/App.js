@@ -17,20 +17,29 @@ const availiableCardSource = (source, current) => {
   return filterCard;
 };
 
+const fetchCards = async (queryString) => {
+  const response = await axois.get("/api/cards", {
+    params: {
+      name: queryString,
+      type: queryString,
+    },
+  });
+  const cards = response.data?.cards;
+  return cards;
+};
+
 const App = () => {
   const [deckSource, setDeckSource] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [myDeck, setMyDeck] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const availiableCards = availiableCardSource(deckSource, myDeck);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
   const onSearchChange = debounce((value) => setQuery(value), 1500);
+
+  const showModal = () => setIsModalVisible(true);
 
   const addCardToDeck = (id) => {
     const selectedCards = filter(deckSource, (card) => card.id === id);
@@ -44,21 +53,10 @@ const App = () => {
 
   const getCard = async (queryString) => {
     setLoading(true);
-    const response = await axois.get("/api/cards", {
-      params: {
-        name: queryString,
-        type: queryString,
-      },
-    });
-    const cards = response.data?.cards;
+    const cards = await fetchCards(queryString);
     setDeckSource(cards);
     setLoading(false);
-    return;
   };
-
-  useEffect(() => {
-    getCard();
-  }, []);
 
   useEffect(() => {
     getCard(query);

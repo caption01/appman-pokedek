@@ -121,7 +121,6 @@ const Card = (props) => {
       {hover && extra && (
         <div
           onClick={() => {
-            console.log("check with id", cardId);
             extra.onClick(cardId);
           }}
         >
