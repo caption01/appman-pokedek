@@ -35,9 +35,14 @@ const App = () => {
   const onSearchChange = (value) => console.log("val", value);
   const onSearchClick = () => console.log("search with query");
 
-  const addCardToDeck = (value) => {
-    const selectedCards = filter(deckSource, (card) => card.id === value);
+  const addCardToDeck = (id) => {
+    const selectedCards = filter(deckSource, (card) => card.id === id);
     setMyDeck([...myDeck, ...selectedCards]);
+  };
+
+  const removeCardFromDeck = (id) => {
+    const selectedCards = filter(myDeck, (card) => card.id !== id);
+    setMyDeck([...selectedCards]);
   };
 
   useEffect(() => {
@@ -58,10 +63,8 @@ const App = () => {
 
   const deleteExtra = {
     title: "X",
-    onClick: () => console.log("rm poke"),
+    onClick: (id) => removeCardFromDeck(id),
   };
-
-  console.log(myDeck);
 
   return (
     <div className="App">
