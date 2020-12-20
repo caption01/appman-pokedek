@@ -35,6 +35,7 @@ const Name = styled.div`
 const StyledText = styled.span`
   position: absolute;
   font-size: 22px;
+  font-weight: bold;
   top: 10px;
   right: 10px;
   cursor: pointer;

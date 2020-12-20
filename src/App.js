@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { debounce, map, filter, xor } from "lodash";
+import { debounce, map, filter, find } from "lodash";
 
 import { axois } from "./helper/axios";
 import Layout from "./components/Layout";
@@ -8,22 +8,13 @@ import Modal from "./components/Modal";
 
 import "./App.css";
 
-const COLORS = {
-  Psychic: "#f8a5c2",
-  Fighting: "#f0932b",
-  Fairy: "#c44569",
-  Normal: "#f6e58d",
-  Grass: "#badc58",
-  Metal: "#95afc0",
-  Water: "#3dc1d3",
-  Lightning: "#f9ca24",
-  Darkness: "#574b90",
-  Colorless: "#FFF",
-  Fire: "#eb4d4b",
-};
-
 const availiableCardSource = (source, current) => {
-  return xor(source, current);
+  const filterCard = filter(source, (card) => {
+    const isExisting = find(current, (curr) => curr.id === card.id);
+    return isExisting ? false : true;
+  });
+
+  return filterCard;
 };
 
 const App = () => {
@@ -85,7 +76,7 @@ const App = () => {
   return (
     <div className="App">
       <Layout onClick={showModal}>
-        {map(availiableCards, (card) => (
+        {map(myDeck, (card) => (
           <Card key={card.id} width="400px" extra={deleteExtra} {...card} />
         ))}
         <Modal
@@ -93,6 +84,7 @@ const App = () => {
           visible={isModalVisible}
           onChange={onSearchChange}
           onCancel={setIsModalVisible}
+          onClick={() => setQuery(null)}
         >
           {map(availiableCards, (card) => (
             <Card key={card.id} width="100%" extra={addExtra} {...card} />
