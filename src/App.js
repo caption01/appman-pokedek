@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { debounce, map } from "lodash";
+import styled from "styled-components";
 
 import { axois } from "./helper/axios";
 import Layout from "./components/Layout";
 import Card from "./components/Card";
+import Modal from "./components/Modal";
+
 import "./App.css";
+
+const WrapperCard = styled.div`
+  position: relative;
+  margin: 16px;
+`;
 
 const COLORS = {
   Psychic: "#f8a5c2",
@@ -22,7 +30,21 @@ const COLORS = {
 
 const App = () => {
   const [deckSource, setDeckSource] = useState([]);
+  const [myDeck, setMyDeck] = useState([]);
   const [query, setQuery] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   useEffect(() => {
     const getCard = async () => {
@@ -35,13 +57,36 @@ const App = () => {
     getCard();
   }, []);
 
+  const addExtra = {
+    title: "add",
+    onClick: () => console.log("add poke"),
+  };
+
+  const deleteExtra = {
+    title: "X",
+    onClick: () => console.log("rm poke"),
+  };
+
   return (
     <div className="App">
-      <Layout>
+      <Layout onClick={showModal}>
         {map(deckSource, (card) => (
-          <Card key={card.id} {...card} />
+          <WrapperCard key={card.id}>
+            <Card width="350px" extra={addExtra} {...card} />
+          </WrapperCard>
         ))}
-        <Card />
+        <Modal
+          visible={isModalVisible}
+          showModal={showModal}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+        >
+          {map(deckSource, (card) => (
+            <WrapperCard key={card.id}>
+              <Card width="100%" extra={deleteExtra} {...card} />
+            </WrapperCard>
+          ))}
+        </Modal>
       </Layout>
     </div>
   );

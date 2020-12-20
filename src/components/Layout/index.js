@@ -26,12 +26,12 @@ const Display = styled.div`
   overflow: scroll;
 `;
 
-const Layout = ({ children }) => {
+const Layout = ({ onClick, children }) => {
   return (
     <Wrapper>
       <Title>My Pokedeck</Title>
       <Display>{children}</Display>
-      <Footer />
+      <Footer onClick={onClick} />
     </Wrapper>
   );
 };
