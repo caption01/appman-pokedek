@@ -1,5 +1,7 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { debounce, map } from "lodash";
 
+import { axois } from "./helper/axios";
 import Layout from "./components/Layout";
 import Card from "./components/Card";
 import "./App.css";
@@ -18,16 +20,31 @@ const COLORS = {
   Fire: "#eb4d4b",
 };
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Layout>
-          <Card />
-        </Layout>
-      </div>
-    );
-  }
-}
+const App = () => {
+  const [deckSource, setDeckSource] = useState([]);
+  const [query, setQuery] = useState(null);
+
+  useEffect(() => {
+    const getCard = async () => {
+      const response = await axois.get("/api/cards");
+      const cards = response.data?.cards;
+      setDeckSource(cards);
+      return;
+    };
+
+    getCard();
+  }, []);
+
+  return (
+    <div className="App">
+      <Layout>
+        {map(deckSource, (card) => (
+          <Card key={card.id} {...card} />
+        ))}
+        <Card />
+      </Layout>
+    </div>
+  );
+};
 
 export default App;
