@@ -3,10 +3,13 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
+    "antd": "^4.9.4",
+    "axios": "^0.21.0",
     "cors": "^2.8.4",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "react-scripts": "^3.4.3"
+    "react-scripts": "^3.4.3",
+    "styled-components": "^5.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

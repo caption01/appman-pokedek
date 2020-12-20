@@ -1,5 +1,8 @@
-import React, { Component } from 'react'
-import './App.css'
+import React, { Component } from "react";
+
+import Layout from "./components/Layout";
+import Card from "./components/Card";
+import "./App.css";
 
 const COLORS = {
   Psychic: "#f8a5c2",
@@ -12,16 +15,19 @@ const COLORS = {
   Lightning: "#f9ca24",
   Darkness: "#574b90",
   Colorless: "#FFF",
-  Fire: "#eb4d4b"
-}
+  Fire: "#eb4d4b",
+};
 
 class App extends Component {
   render() {
     return (
       <div className="App">
+        <Layout>
+          <Card />
+        </Layout>
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;
