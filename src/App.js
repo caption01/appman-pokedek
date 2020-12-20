@@ -38,13 +38,8 @@ const App = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const onSearchChange = (value) => console.log("val", value);
+  const onSearchClick = () => console.log("search with query");
 
   useEffect(() => {
     const getCard = async () => {
@@ -77,9 +72,8 @@ const App = () => {
         ))}
         <Modal
           visible={isModalVisible}
-          showModal={showModal}
-          handleOk={handleOk}
-          handleCancel={handleCancel}
+          onChange={onSearchChange}
+          onClick={onSearchClick}
         >
           {map(deckSource, (card) => (
             <WrapperCard key={card.id}>
