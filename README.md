@@ -1,5 +1,29 @@
 ### Nutchapon Hanouypornlert
 
+#### FYI
+
+as i do assignment i found something quiet small bug
+
+1. api query name and type logic in
+
+   ```
+     cards: _.filter(cards, (card) => {
+     const name = _.toUpper(_.get(req, "query.name", ""));
+     const type = _.toUpper(_.get(req, "query.type", ""));
+     const checkName = _.includes(_.toUpper(card.name), name);
+     const checkType = _.includes(_.toUpper(card.type), type);
+     return checkName && checkType;
+   }),
+   ```
+
+   i decide to change && to || in return line
+
+   ```
+    return checkName && checkType -> return checkName || checkType;
+   ```
+
+   PS. Sorry if i was incorrect.
+
 #### Time-Tracking
 
 // 0-30 min
