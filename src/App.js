@@ -35,7 +35,7 @@ const App = () => {
   const getCard = async (queryString) => {
     setLoading(true);
     const cards = await fetchCards(queryString, {
-      onError: Notification("error"),
+      onError: () => Notification("error"),
     });
     setDeckSource(cards);
     setLoading(false);
