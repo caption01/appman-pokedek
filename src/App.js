@@ -1,47 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { map, filter, find } from "lodash";
-import { notification } from "antd";
+import { map, filter } from "lodash";
 
-import { axois } from "./helper/axios";
+import { fetchCards, availiableCardSource } from "./helper/cards.js";
 import Layout from "./components/Layout";
 import Card from "./components/Card";
 import Modal from "./components/Modal";
+import Notification from "./components/Notification";
 
 import "./App.css";
-
-const openNotification = (type, msg) => {
-  notification[type]({
-    message: msg,
-  });
-};
-
-const availiableCardSource = (source, current) => {
-  const filterCard = filter(source, (card) => {
-    const isExisting = find(current, (curr) => curr.id === card.id);
-    return isExisting ? false : true;
-  });
-
-  return filterCard;
-};
-
-const fetchCards = async (queryString) => {
-  let cards = [];
-
-  try {
-    const response = await axois.get("/api/cards", {
-      params: {
-        name: queryString,
-        type: queryString,
-      },
-    });
-    cards = response.data?.cards;
-  } catch (err) {
-    openNotification("error", "please check api-server");
-    return cards;
-  }
-
-  return cards;
-};
 
 const App = () => {
   const [deckSource, setDeckSource] = useState([]);
@@ -68,7 +34,9 @@ const App = () => {
 
   const getCard = async (queryString) => {
     setLoading(true);
-    const cards = await fetchCards(queryString);
+    const cards = await fetchCards(queryString, {
+      onError: Notification("error"),
+    });
     setDeckSource(cards);
     setLoading(false);
   };
