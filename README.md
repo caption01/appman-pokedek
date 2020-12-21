@@ -2,8 +2,7 @@
 
 ### About app
 
-- automatic search with delay 1.2s
-- if click on icon search will seach all card without query name and type
+- search pokemonCard by name & type by click searchIcon or press enter
 
 #### FYI
 
