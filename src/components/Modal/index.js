@@ -19,20 +19,30 @@ const suffix = (onClick) => (
   />
 );
 
-const Modal = ({ visible, children, onChange, onClick, onCancel, loading }) => {
-  const ModalHeader = () => (
-    <Input
-      placeholder="Find pokemon"
-      suffix={suffix(onClick)}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  );
-
+const Modal = ({
+  visible,
+  children,
+  query,
+  onChange,
+  onClick,
+  onCancel,
+  loading,
+}) => {
   return (
     <>
       <StyledModal
         visible={visible}
-        title={<ModalHeader />}
+        title={
+          <Input
+            placeholder="Find pokemon"
+            suffix={suffix(onClick)}
+            onPressEnter={onClick}
+            onChange={(e) => {
+              onChange(e.target.value);
+            }}
+            value={query}
+          />
+        }
         closable={false}
         mask
         maskClosable
