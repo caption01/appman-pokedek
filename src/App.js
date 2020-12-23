@@ -93,10 +93,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getCards: () => dispatch(cardActions.fetchCards()),
-  };
-};
+const { fetchCards: getCards } = cardActions;
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, { getCards })(App);
