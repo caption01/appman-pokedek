@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { map, filter } from "lodash";
+import { connect } from "react-redux";
 
+import { cardActions } from "./redux/card";
 import { fetchCards, availiableCardSource } from "./helper/cards.js";
 import Layout from "./components/Layout";
 import Card from "./components/Card";
@@ -9,7 +11,8 @@ import Notification from "./components/Notification";
 
 import "./App.css";
 
-const App = () => {
+const App = (props) => {
+  console.log("App Props", props);
   const [deckSource, setDeckSource] = useState([]);
   const [myDeck, setMyDeck] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -61,7 +64,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <Layout onClick={showModal}>
+      <Layout onClick={() => props.getCards()}>
         {map(myDeck, (card) => (
           <Card key={card.id} width="400px" extra={deleteExtra} {...card} />
         ))}
@@ -84,4 +87,16 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    cardRedux: state.card,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getCards: () => dispatch(cardActions.fetchCards()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
