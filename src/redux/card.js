@@ -1,11 +1,19 @@
+import { fetchCards, availiableCardSource } from "../helper/cards.js";
+
 const cardState = {
-  length: 0,
+  deckSource: [],
+  myDeck: [],
+  loading: false,
 };
 
 const cardReducer = (state = cardState, action) => {
   switch (action.type) {
     case "FETCH_CARDS": {
-      return { ...state, length: state.length + 1 };
+      return { ...state, deckSource: action.payload, loading: false };
+    }
+
+    case "FETCH_CARDS_LOADING": {
+      return { ...state, loading: action.payload };
     }
 
     default: {
@@ -14,12 +22,20 @@ const cardReducer = (state = cardState, action) => {
   }
 };
 
-const fetchCards = () => {
-  return { type: "FETCH_CARDS" };
+const setCardsLoadingStatus = (status) => ({
+  type: "FETCH_CARDS_LOADING",
+  payload: status,
+});
+
+const getCards = (queryString) => async (dispatch) => {
+  dispatch(setCardsLoadingStatus(true));
+
+  const response = await fetchCards(queryString);
+  dispatch({ type: "FETCH_CARDS", payload: response });
 };
 
 const cardActions = {
-  fetchCards,
+  getCards,
 };
 
 export { cardReducer, cardActions };
