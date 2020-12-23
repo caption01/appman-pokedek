@@ -8,12 +8,12 @@ const cardState = {
 
 const cardReducer = (state = cardState, action) => {
   switch (action.type) {
-    case "FETCH_CARDS": {
-      return { ...state, deckSource: action.payload, loading: false };
+    case "FETCH_CARDS_PENDING": {
+      return { ...state, loading: true };
     }
 
-    case "FETCH_CARDS_LOADING": {
-      return { ...state, loading: action.payload };
+    case "FETCH_CARDS_FULFILLED": {
+      return { ...state, deckSource: action.payload, loading: false };
     }
 
     default: {
@@ -22,16 +22,9 @@ const cardReducer = (state = cardState, action) => {
   }
 };
 
-const setCardsLoadingStatus = (status) => ({
-  type: "FETCH_CARDS_LOADING",
-  payload: status,
-});
-
-const getCards = (queryString) => async (dispatch) => {
-  dispatch(setCardsLoadingStatus(true));
-
-  const response = await fetchCards(queryString);
-  dispatch({ type: "FETCH_CARDS", payload: response });
+const getCards = (queryString) => {
+  const response = fetchCards(queryString);
+  return { type: "FETCH_CARDS", payload: response };
 };
 
 const cardActions = {
