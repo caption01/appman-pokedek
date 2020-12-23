@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { map, filter } from "lodash";
+import { map, isEmpty } from "lodash";
 import { connect } from "react-redux";
 
 import { cardActions } from "./redux/card";
@@ -14,80 +14,62 @@ import "./App.css";
 const App = (props) => {
   const {
     cardRedux: { deckSource, myDeck, loading },
-    getCards,
+    fetchCard,
+    selectCard,
+    removeCard,
   } = props;
 
-  // const [deckSource, setDeckSource] = useState([]);
-  // const [myDeck, setMyDeck] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [query, setQuery] = useState(null);
+  const [query, setQuery] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // const availiableCards = availiableCardSource(deckSource, myDeck);
-
-  // const onSearchChange = (value) => setQuery(value);
+  const onSearchChange = (value) => setQuery(value);
 
   const showModal = () => setIsModalVisible(true);
 
-  // const addCardToDeck = (id) => {
-  //   const selectedCards = filter(deckSource, (card) => card.id === id);
-  //   setMyDeck([...myDeck, ...selectedCards]);
-  // };
+  const onSearch = async () => {
+    const { payload } = await fetchCard(query);
 
-  // const removeCardFromDeck = (id) => {
-  //   const selectedCards = filter(myDeck, (card) => card.id !== id);
-  //   setMyDeck([...selectedCards]);
-  // };
+    if (!isEmpty(payload)) return;
 
-  // const getCard = async (queryString) => {
-  //   setLoading(true);
-  //   const cards = await fetchCards(queryString, {
-  //     onError: () => Notification("error"),
-  //   });
-  //   setDeckSource(cards);
-  //   setLoading(false);
-  // };
-
-  // const onSearch = () => {
-  //   getCard(query);
-  // };
+    Notification("error", "pokemon not found");
+  };
 
   useEffect(() => {
-    getCards();
+    fetchCard();
   }, []);
 
-  // const addExtra = {
-  //   title: "add",
-  //   onClick: (id) => addCardToDeck(id),
-  // };
+  const addExtra = {
+    title: "add",
+    onClick: (id) => {
+      selectCard(id);
+    },
+  };
 
-  // const deleteExtra = {
-  //   title: "X",
-  //   onClick: (id) => removeCardFromDeck(id),
-  // };
-
-  // extra={deleteExtra}
+  const deleteExtra = {
+    title: "X",
+    onClick: (id) => removeCard(id),
+  };
 
   return (
     <div className="App">
-      <Layout onClick={() => props.getCards()}>
-        {map(deckSource, (card) => (
-          <Card key={card.id} width="400px" {...card} />
+      <Layout onClick={() => showModal()}>
+        {map(myDeck, (card) => (
+          <Card key={card.id} width="400px" {...card} extra={deleteExtra} />
         ))}
-        {/* <Modal
+        <Modal
           loading={loading}
           visible={isModalVisible}
           query={query}
           onChange={onSearchChange}
           onCancel={setIsModalVisible}
           onClick={() => {
-            // onSearch();
+            onSearch();
           }}
         >
-          {map(availiableCards, (card) => (
+          {map(deckSource, (card) => (
             <Card key={card.id} width="100%" extra={addExtra} {...card} />
           ))}
-        </Modal> */}
+        </Modal>
       </Layout>
     </div>
   );
@@ -99,6 +81,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const { getCards } = cardActions;
+const { fetchCard, selectCard, removeCard } = cardActions;
 
-export default connect(mapStateToProps, { getCards })(App);
+export default connect(mapStateToProps, { fetchCard, selectCard, removeCard })(
+  App
+);

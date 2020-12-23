@@ -93,7 +93,7 @@ const transformCardInfo = (card) => {
 };
 
 const Card = (props) => {
-  const { extra, ...cardProps } = props;
+  const { uid, extra, width } = props;
   const [hover, setHover] = useState(false);
 
   const cardInfo = transformCardInfo(props);
@@ -104,7 +104,7 @@ const Card = (props) => {
       onMouseMove={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <StyledCard hoverable {...cardProps} hover={hover}>
+      <StyledCard hoverable width={width} hover={hover}>
         <Row gutter={[24, 0]}>
           <Col xs={10} sm={10}>
             <img src={cardInfo?.imgSrc} alt="pic" width="100%" />
@@ -124,7 +124,7 @@ const Card = (props) => {
             extra.onClick(cardId);
           }}
         >
-          <StyledText {...extra}>{extra.title}</StyledText>
+          <StyledText>{extra.title}</StyledText>
         </div>
       )}
     </WrapperCard>

@@ -6,9 +6,9 @@ const config = {
   },
 };
 
-const Notification = (type) => {
+const Notification = (type, msg) => {
   notification[type]({
-    message: config[type]?.msg,
+    message: msg || config[type]?.msg,
   });
 };
 

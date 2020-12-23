@@ -1,4 +1,4 @@
-import { filter, find } from "lodash";
+import { filter, find, isEmpty } from "lodash";
 
 import { axois } from "./axios";
 
@@ -24,11 +24,25 @@ export const fetchCards = async (
   return cards;
 };
 
-export const availiableCardSource = (source, current) => {
-  const filterCard = filter(source, (card) => {
-    const isExisting = find(current, (curr) => curr.id === card.id);
+export const filterDeckWithCurrentState = (cardData, currentDeck) => {
+  if (isEmpty(currentDeck)) return cardData;
+
+  const filterCard = filter(cardData, (card) => {
+    const isExisting = find(currentDeck, (curr) => curr.id === card.id);
     return isExisting ? false : true;
   });
 
   return filterCard;
+};
+
+export const findCardInDeck = (id, deck) => {
+  return find(deck, (card) => card?.id === id);
+};
+
+export const addCardToDeck = (card, deck) => {
+  return [...deck, card];
+};
+
+export const removeCardFromDeck = (id, deck) => {
+  return filter(deck, (card) => card?.id !== id);
 };
